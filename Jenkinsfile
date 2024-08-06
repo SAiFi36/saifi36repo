@@ -34,20 +34,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Deploy Docker image to Kubernetes
-                    sshagent (credentials: [KUBERNETES_SSH_CREDENTIALS_ID]) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@${KUBERNETES_MASTER_IP} << 'EOF'
-                            kubectl set image deployment/${KUBERNETES_DEPLOYMENT_NAME} ${KUBERNETES_DEPLOYMENT_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} -n ${KUBERNETES_NAMESPACE}
-                            kubectl rollout status deployment/${KUBERNETES_DEPLOYMENT_NAME} -n ${KUBERNETES_NAMESPACE}
-                        EOF
-                        """
-                    }
-                }
-            }
+        
         }
     }
     

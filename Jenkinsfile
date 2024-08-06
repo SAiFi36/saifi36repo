@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Define environment variables for Docker Hub credentials and image details
         DOCKER_HUB_CREDENTIALS_ID = 'dockerhub'
-        DOCKER_IMAGE_NAME = 'saifi36/kkk'
+        DOCKER_IMAGE_NAME = 'saifi36/kkl'
         DOCKER_IMAGE_TAG = 'latest'
         KUBERNETES_SSH_CREDENTIALS_ID = 'kubernetes-ssh-credentials-id'
         KUBERNETES_MASTER_IP = 'your-kubernetes-master-ip'

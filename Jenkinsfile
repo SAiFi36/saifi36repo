@@ -31,6 +31,8 @@ pipeline {
                     }
                     echo "Pushing Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                     sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                    echo "Logging out from Docker Hub"
+                    sh "docker logout"
                 }
             }
         }

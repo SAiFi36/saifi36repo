@@ -63,15 +63,13 @@ pipeline {
 
                         # Apply service configuration to expose deployment
                         kubectl apply -f ~/exp.yaml
-                        kubectl expose deployment my-app-deployment --type=NodePort
+                        kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
 
                         # Optional: Check the status of the deployment and service
                         kubectl get deployments
                         kubectl get services
 
-                        # Get the external IP of the LoadBalancer service
-                        SERVICE_IP=\$(kubectl get services ${SERVICE_NAME} --output=jsonpath='{.status.loadBalancer.ingress[0].ip}')
-                        echo "Service IP: \${SERVICE_IP}"
+                        
 
                        
                         

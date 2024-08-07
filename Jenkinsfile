@@ -35,17 +35,6 @@ pipeline {
           sh "docker logout"
         }
       }
-      stage('Login to Kubernetes Control Plane') {
-        steps {
-          script {
-            echo "Loggig into K3 Master"
-            sh ""
-            " ssh -o StrictHostKeyChecking=no admin@172.31.13.20 \'whoami\' "
-            ""
-
-          }
-        }
-      }
     }
 
   }

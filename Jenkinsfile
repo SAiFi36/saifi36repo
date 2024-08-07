@@ -44,6 +44,11 @@ pipeline {
                 script {
                     echo "Connecting to Kubernetes control plane via SSH"
                         sh """
+
+                        # Copy YAML files to Kubernetes master home directory
+                        scp -o StrictHostKeyChecking=no exp.yaml dep.yaml admin@${KUBERNETES_MASTER_IP}:~/
+
+                        
                         ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << 'EOF'
                         # Update the image in dep.yaml
                         sed -i 's|image: .*/.*|image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|g' ~/dep.yaml

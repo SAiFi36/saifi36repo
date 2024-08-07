@@ -7,7 +7,7 @@ pipeline {
     DOCKER_IMAGE_NAME = 'saifi36/kkl'
     DOCKER_IMAGE_TAG = 'latest'
     KUBERNETES_SSH_CREDENTIALS_ID = 'kubernetes-ssh-credentials-id'
-    KUBERNETES_MASTER_IP = 'your-kubernetes-master-ip'
+    KUBERNETES_MASTER_IP = '172.31.13.20'
     KUBERNETES_DEPLOYMENT_NAME = 'saifi36/proj'
     KUBERNETES_NAMESPACE = 'default' // Change as needed
   }
@@ -37,5 +37,21 @@ pipeline {
       }
     }
 
+    stage('Run Commands on Kubernetes Master') {
+      steps {
+        script {
+          echo "Connecting to Kubernetes control plane via SSH"
+          withCredentials([sshUserPrivateKey(credentialsId: KUBERNETES_SSH_CREDENTIALS_ID, keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+            sh ""
+            "
+            ssh - o StrictHostKeyChecking = no admin @$ {
+              KUBERNETES_MASTER_IP
+            }\\
+            'whoami; pwd'
+            ""
+            "
+          }
+        }
+      }
+    }
   }
-}

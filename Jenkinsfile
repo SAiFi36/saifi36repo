@@ -72,10 +72,7 @@ pipeline {
                         SERVICE_IP=\$(kubectl get services ${SERVICE_NAME} --output=jsonpath='{.status.loadBalancer.ingress[0].ip}')
                         echo "Service IP: \${SERVICE_IP}"
 
-                        # Get the IPs of the pods
-                        POD_IPS=\$(kubectl get pods -l app=${DOCKER_IMAGE_NAME} -o jsonpath='{.items[*].status.podIP}')
-                        echo "Pod IPs: \${POD_IPS}"
-
+                       
                         
                         """
                     }

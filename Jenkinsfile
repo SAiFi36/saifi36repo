@@ -43,8 +43,16 @@ pipeline {
                     echo "Connecting to Kubernetes control plane via SSH"
                         sh """
                         ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << 'EOF'
-                        kubectl get nodes;
-                        pwd
+                        # Update the image in dep.yaml
+                        sed -i 's|image: .*/.*|image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|g' ~/dep.yaml
+
+                        # Apply deployment and service configurations
+                        kubectl apply -f ~/dep.yaml
+                        kubectl apply -f ~/exp.yaml
+
+                        # Optional: Check the status of the deployment and service
+                        kubectl get deployments
+                        kubectl get services
                         """
                     }
                 }

@@ -43,7 +43,7 @@ pipeline {
                     echo "Connecting to Kubernetes control plane via SSH"
                         sh '''
                         ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << EOF
-                        whoami
+                        kubectl get nodes
                         pwd
                         EOF
                         '''
@@ -53,15 +53,4 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo "Cleaning up Docker resources"
-            sh "docker system prune -af"
-        }
-        success {
-            echo "Pipeline completed successfully"
-        }
-        failure {
-            echo "Pipeline failed"
-        }
-    }
+    

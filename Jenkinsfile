@@ -42,7 +42,7 @@ pipeline {
                 script {
                     echo "Connecting to Kubernetes control plane via SSH"
                         sh '''
-                        ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << EOF
+                        ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << 'EOF'
                         kubectl get nodes
                         pwd
                         EOF

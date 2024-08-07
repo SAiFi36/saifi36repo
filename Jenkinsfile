@@ -35,6 +35,19 @@ pipeline {
           sh "docker logout"
         }
       }
+      stage ('Login to Kubernetes Control Plane') {
+        steps {
+            script {
+              echo "Loggig into K3 Master"
+              sh '''ssh admin@172.31.13.20 \'whoami\'
+              '''
+               sh '''ssh admin@172.31.13.20 \'pwd\'
+              '''
+               sh '''ssh admin@172.31.13.20 \'ip a\'
+              '''
+            }
+        }
+      }
     }
 
   }

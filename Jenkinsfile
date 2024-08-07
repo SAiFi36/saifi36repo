@@ -41,7 +41,6 @@ pipeline {
             steps {
                 script {
                     echo "Connecting to Kubernetes control plane via SSH"
-                    withCredentials([sshUserPrivateKey(credentialsId: KUBERNETES_SSH_CREDENTIALS_ID, keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         sh '''
                         ssh -o StrictHostKeyChecking=no admin@${KUBERNETES_MASTER_IP} << EOF
                         whoami

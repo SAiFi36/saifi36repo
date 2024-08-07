@@ -9,6 +9,8 @@ pipeline {
         KUBERNETES_SSH_CREDENTIALS_ID = 'kubernetes-ssh-credentials-id'
         KUBERNETES_MASTER_IP = '172.31.13.20'
         KUBERNETES_DEPLOYMENT_NAME = 'saifi36/proj'
+        SERVICE_NAME = 'my-app-service'
+        DEPLOYMENT_NAME = 'my-app-deployment'  
         KUBERNETES_NAMESPACE = 'default' // Change as needed
     }
 
@@ -46,13 +48,35 @@ pipeline {
                         # Update the image in dep.yaml
                         sed -i 's|image: .*/.*|image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|g' ~/dep.yaml
 
-                        # Apply deployment and service configurations
+                        # Apply deployment configuration
                         kubectl apply -f ~/dep.yaml
+
+                        # Check if the deployment exists
+                        if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
+                            echo "Deployment exists, rolling out new image"
+                            kubectl rollout restart deployment/${DEPLOYMENT_NAME}
+                            kubectl rollout status deployment/${DEPLOYMENT_NAME}
+                        else
+                            echo "Deployment does not exist, creating deployment"
+                            kubectl apply -f ~/dep.yaml
+                        fi
+
+                        # Apply service configuration to expose deployment
                         kubectl apply -f ~/exp.yaml
 
                         # Optional: Check the status of the deployment and service
                         kubectl get deployments
                         kubectl get services
+
+                        # Get the external IP of the LoadBalancer service
+                        SERVICE_IP=\$(kubectl get services ${SERVICE_NAME} --output=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+                        echo "Service IP: \${SERVICE_IP}"
+
+                        # Get the IPs of the pods
+                        POD_IPS=\$(kubectl get pods -l app=${DOCKER_IMAGE_NAME} -o jsonpath='{.items[*].status.podIP}')
+                        echo "Pod IPs: \${POD_IPS}"
+
+                        
                         """
                     }
                 }

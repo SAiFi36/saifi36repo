@@ -63,6 +63,7 @@ pipeline {
 
                         # Apply service configuration to expose deployment
                         kubectl apply -f ~/exp.yaml
+                        kubectl expose deployment my-app-deployment --type=NodePort
 
                         # Optional: Check the status of the deployment and service
                         kubectl get deployments

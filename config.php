@@ -1,6 +1,6 @@
 <?php
 
-$conn = new mysqli('172.31.48.9','saifi36','password','project');
+$conn = new mysqli('172.31.48.9','saifi36','secret','project');
 session_start();
 //Connection - Check
 if ($conn->connect_error){

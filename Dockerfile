@@ -6,7 +6,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Copy the PHP site files to the Apache document root
 COPY ./*.php /var/www/html/
-COPY ./index.html /var/www/html/index.html
+#COPY ./index.html /var/www/html/index.html
 
 # Optional: Configure Apache to use the PHP site
 #COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf

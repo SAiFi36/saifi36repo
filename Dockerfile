@@ -9,7 +9,7 @@ COPY ./*.php /var/www/html/
 COPY ./index.html /var/www/html/index.html
 
 # Optional: Configure Apache to use the PHP site
-COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
+#COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Expose port 80 for the Apache web server
 EXPOSE 80

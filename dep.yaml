@@ -17,3 +17,4 @@ spec:
         image: saifi36/exam3020:latest
         ports:
         - containerPort: 80
+          nodePort: 32005

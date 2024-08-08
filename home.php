@@ -1,13 +1,17 @@
 <?php
 include 'config.php';
 
-
-if(!isset($_SESSION['user']))
-{
-        header("Location:index.php");
-        exit;
+// Redirect if session user is not set
+if (!isset($_SESSION['user'])) {
+    // Ensure no output has been sent before this
+    header("Location: index.php");
+    exit;
 }
-//echo($_SESSION['user']);
-
 ?>
-<h1> Hello <?php echo($_SESSION['user'])?> </h1>
+<!DOCTYPE html>
+<html>
+<body>
+<h1> Hello <?php echo htmlspecialchars($_SESSION['user']); ?> </h1>
+<p>Connection successful!</p>
+</body>
+</html>

@@ -1,2 +1,2 @@
 FROM ubuntu/apache2
-COPY ./*.php /var/www/html/
+COPY ./index.html && *.php /var/www/html/

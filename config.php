@@ -1,13 +1,20 @@
 <?php
+$host = '172.31.48.9';  // Replace with your MariaDB host
+$username = 'saifi36';  // Replace with your MariaDB username
+$password = 'secret';   // Replace with your MariaDB password
+$database = 'project';  // Replace with your MariaDB database name
 
-$conn = new mysqli('172.31.48.9','saifi36','secret','project');
+// Create a new MySQLi connection
+$conn = new mysqli($host, $username, $password, $database);
+
+// Start a session
 session_start();
-//Connection - Check
-if ($conn->connect_error){
-        die("Connetion Failed". $conn->connect_error);
+
+// Check if the connection was successful
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-//Success
-//echo "CONNECTION WORKING";
-//echo $_SESSION['user'];
+// Connection was successful
+echo "Connection successful!";
 ?>

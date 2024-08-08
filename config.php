@@ -1,6 +1,6 @@
 <?php
 
-$conn = new mysqli('localhost','tinku','Tinku@123','my_users');
+$conn = new mysqli('172.31.48.9','saifi36','password','project');
 session_start();
 //Connection - Check
 if ($conn->connect_error){

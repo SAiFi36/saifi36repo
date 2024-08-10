@@ -47,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Run Commands on Kubernetes Master') {
+        stage('Run Commands on Kubernetes Master to DEPLOY IMAGE on CLUSTER') {
             steps {
                 script {
                     echo "Connecting to Kubernetes control plane via SSH"

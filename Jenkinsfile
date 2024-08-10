@@ -24,6 +24,14 @@ pipeline {
             }
         }
 
+        stage('Scan Image with Trivy') {
+            steps {
+                script {
+                    sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
+                }
+            }
+        }
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -70,7 +78,7 @@ pipeline {
                         kubectl apply -f ~/exp.yaml
                         kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
 
-                        # Optional: Check the status of the deployment and service
+                        # Check the status of the deployment and service
                         kubectl get deployments
                         kubectl get services
 

@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'saifi36/project'
         DOCKER_IMAGE_TAG = 'latest'
         KUBERNETES_SSH_CREDENTIALS_ID = 'kubernetes-ssh-credentials-id'
-        KUBERNETES_MASTER_IP = '172.31.13.20'
+        KUBERNETES_MASTER_IP = '172.31.42.37'
         KUBERNETES_DEPLOYMENT_NAME = 'saifi36/proj'
         SERVICE_NAME = 'saifi36-service'
         DEPLOYMENT_NAME = 'saifi36-deployment'

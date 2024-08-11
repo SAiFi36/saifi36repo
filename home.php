@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start the session here to check if the user is logged in
+session_start(); // Start the session
 
 // Redirect if session user is not set
 if (!isset($_SESSION['user'])) {
@@ -15,5 +15,6 @@ if (!isset($_SESSION['user'])) {
 <body>
     <h1>Hello <?php echo htmlspecialchars($_SESSION['user']); ?></h1>
     <p>Connection successful!</p>
+    <a href="logout.php">Logout</a>
 </body>
 </html>

@@ -61,16 +61,12 @@ pipeline {
 
           # Check if the deployment exists
           if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
-            echo "Deployment exists, rolling out new image"
-            kubectl rollout restart deployment/${DEPLOYMENT_NAME}
+            echo "Deployment exists, updating the image"
+            kubectl apply -f ${DEPLOYMENT_FILE}
           else
             echo "Deployment does not exist, creating deployment"
             kubectl apply -f ${DEPLOYMENT_FILE}
           fi
-
-          # Wait for the deployment rollout to complete
-          echo "Waiting for deployment to finish rolling out..."
-          kubectl rollout status deployment/${DEPLOYMENT_NAME}
 
           # Apply service configuration to expose deployment
           kubectl apply -f ${SERVICE_FILE}

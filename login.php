@@ -1,41 +1,32 @@
 <?php
-include 'config.php';
+include 'config.php'; // Ensure this is included after starting the session in your main script
 
-// Start the session
+// Start a session
 session_start();
 
-// Redirect if session user is already set
-if (isset($_SESSION['user'])) {
-    header("Location: home.php");
+if(!isset($_REQUEST['submit'])) {
+    header("Location: index.php");
     exit;
 }
 
-// Check if the form is submitted
-if (isset($_POST['submit'])) {
-    $uname = $_POST['uname'];
-    $pass = $_POST['pass'];
+$test_query = "SELECT * FROM users WHERE username='" . $_REQUEST['uname'] . "' AND password='" . $_REQUEST['pass'] . "'";
+$query_result = mysqli_query($conn, $test_query, MYSQLI_STORE_RESULT);
 
-    // Prepare and execute a statement
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
-    $stmt->bind_param("ss", $uname, $pass);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        echo "<script>
-                alert('WRONG CREDENTIALS');
-                window.location = 'index.php';
-              </script>";
-    } else {
-        $user = $result->fetch_assoc();
-        $_SESSION['user'] = $user['username'];
-        echo "<script>window.location = 'home.php';</script>";
-    }
-
-    $stmt->close();
-    $conn->close();
+if(mysqli_num_rows($query_result) == 0) {
+    ?>
+    <script>
+        alert("WRONG CREDENTIALS");
+        window.location = "index.php";
+    </script>
+    <?php
 } else {
-    header("Location: index.php");
-    exit;
+    while($test = mysqli_fetch_array($query_result)) {
+        $_SESSION['user'] = $test['username'];
+    }
+    ?>
+    <script>
+        window.location = 'home.php';
+    </script>
+    <?php
 }
 ?>

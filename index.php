@@ -21,8 +21,7 @@
       min-height: 100vh;
       width: 100%;
       padding: 0 10px;
-      background: url("https://www.codingnepalweb.com/demos/create-glassmorphism-login-form-html-css/hero-bg.jpg"), #000;
-      background-position: center;
+      background: url("https://www.codingnepalweb.com/demos/create-glassmorphism-login-form-html-css/hero-bg.jpg") no-repeat center center fixed;
       background-size: cover;
       position: relative;
     }
@@ -33,6 +32,7 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5); /* Overlay to make the text more readable */
+      z-index: 0; /* Ensure this is behind the wrapper */
     }
 
     .wrapper {
@@ -40,9 +40,10 @@
       border-radius: 8px;
       padding: 30px;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(9px);
-      -webkit-backdrop-filter: blur(9px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
       position: relative;
       z-index: 1; /* Ensure the form is above the background overlay */
     }

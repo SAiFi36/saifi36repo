@@ -48,8 +48,7 @@ pipeline {
       steps {
         script {
           echo "Connecting to Kubernetes control plane via SSH"
-          sh ""
-          "
+          sh """
 
           # Copy YAML files to Kubernetes master home directory
           scp - o StrictHostKeyChecking = no exp.yaml dep.yaml admin @$ {
@@ -105,9 +104,7 @@ pipeline {
           # Check the status of the deployment and service
           kubectl get deployments
           kubectl get services
-
-            ""
-          "
+"""
         }
       }
     }

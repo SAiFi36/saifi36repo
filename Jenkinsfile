@@ -76,7 +76,7 @@ kubectl rollout status deployment/${DEPLOYMENT_NAME}
 kubectl apply -f ${SERVICE_FILE}
 
 # Expose deployment (if needed)
-kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
+#kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
 
 # Check the status of the deployment and service
 kubectl get deployments

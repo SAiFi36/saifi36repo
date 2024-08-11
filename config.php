@@ -13,5 +13,5 @@ if ($conn->connect_error) {
 }
 
 // Connection was successful
-echo "Connection successful!";
+// Remove echo "Connection successful!"; from here to avoid output before headers
 ?>

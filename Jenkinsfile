@@ -77,7 +77,7 @@ pipeline {
           # Check the status of the deployment and service
           kubectl get deployments
           kubectl get services
-          EOF
+        
           """
         }
       }

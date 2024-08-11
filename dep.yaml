@@ -1,19 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-deployment
+  name: saifi36-deployment
+  namespace: default  # Change as needed
 spec:
-  replicas: 2
+  replicas: 2  # Number of replicas you want
   selector:
     matchLabels:
-      app: my-app
+      app: saifi36
   template:
     metadata:
       labels:
-        app: my-app
+        app: saifi36
     spec:
       containers:
-      - name: my-app
-        image: saifi36/exam3020:latest
+      - name: saifi36-container
+        image: saifi36/project:latest  # Updated dynamically with your script
         ports:
-        - containerPort: 80
+        - containerPort: 8080  # Adjust if your app runs on a different port
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"

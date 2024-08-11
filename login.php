@@ -1,18 +1,20 @@
 <?php
-include 'config.php'; // Ensure this is included after starting the session in your main script
+include 'config.php'; // Include database connection and config
 
-// Start a session
-session_start();
+session_start(); // Start the session
 
-if(!isset($_REQUEST['submit'])) {
+if (!isset($_REQUEST['submit'])) {
     header("Location: index.php");
     exit;
 }
 
-$test_query = "SELECT * FROM users WHERE username='" . $_REQUEST['uname'] . "' AND password='" . $_REQUEST['pass'] . "'";
-$query_result = mysqli_query($conn, $test_query, MYSQLI_STORE_RESULT);
+$username = $_REQUEST['uname'];
+$password = $_REQUEST['pass'];
 
-if(mysqli_num_rows($query_result) == 0) {
+$test_query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+$query_result = mysqli_query($conn, $test_query);
+
+if (mysqli_num_rows($query_result) == 0) {
     ?>
     <script>
         alert("WRONG CREDENTIALS");
@@ -20,7 +22,7 @@ if(mysqli_num_rows($query_result) == 0) {
     </script>
     <?php
 } else {
-    while($test = mysqli_fetch_array($query_result)) {
+    while ($test = mysqli_fetch_array($query_result)) {
         $_SESSION['user'] = $test['username'];
     }
     ?>

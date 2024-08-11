@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
         // Define environment variables for Docker Hub credentials and image details
         DOCKER_HUB_CREDENTIALS_ID = 'dockerhub'
@@ -9,11 +8,12 @@ pipeline {
         KUBERNETES_SSH_CREDENTIALS_ID = 'kubernetes-ssh-credentials-id'
         KUBERNETES_MASTER_IP = '172.31.13.20'
         KUBERNETES_DEPLOYMENT_NAME = 'saifi36/proj'
-        SERVICE_NAME = 'my-app-service'
-        DEPLOYMENT_NAME = 'my-app-deployment'  
+        SERVICE_NAME = 'saifi36-service'
+        DEPLOYMENT_NAME = 'saifi36-deployment'
+        DEPLOYMENT_FILE = "~/dep.yaml"
+        SERVICE_FILE = "~/exp.yaml"
         KUBERNETES_NAMESPACE = 'default' // Change as needed
     }
-
     stages {
         stage('Build Docker Image') {
             steps {
@@ -23,7 +23,6 @@ pipeline {
                 }
             }
         }
-
         stage('Scan Image with Trivy') {
             steps {
                 script {
@@ -31,7 +30,6 @@ pipeline {
                 }
             }
         }
-
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -46,12 +44,11 @@ pipeline {
                 }
             }
         }
-
         stage('Run Commands on Kubernetes Master to DEPLOY IMAGE on CLUSTER') {
             steps {
                 script {
                     echo "Connecting to Kubernetes control plane via SSH"
-                        sh """
+                    sh """
 
                         # Copy YAML files to Kubernetes master home directory
                         scp -o StrictHostKeyChecking=no exp.yaml dep.yaml admin@${KUBERNETES_MASTER_IP}:~/
@@ -62,35 +59,36 @@ pipeline {
                         sed -i 's|image: .*/.*|image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|g' ~/dep.yaml
 
                         # Apply deployment configuration
-                        kubectl apply -f ~/dep.yaml
+kubectl apply -f ${DEPLOYMENT_FILE}
 
-                        # Check if the deployment exists
-                        if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
-                            echo "Deployment exists, rolling out new image"
-                            kubectl rollout restart deployment/${DEPLOYMENT_NAME}
-                            kubectl rollout status deployment/${DEPLOYMENT_NAME}
-                        else
-                            echo "Deployment does not exist, creating deployment"
-                            kubectl apply -f ~/dep.yaml
-                        fi
+# Check if the deployment exists
+if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
+    echo "Deployment exists, rolling out new image"
+    kubectl rollout restart deployment/${DEPLOYMENT_NAME}
+else
+    echo "Deployment does not exist, creating deployment"
+    kubectl apply -f ${DEPLOYMENT_FILE}
+fi
 
-                        # Apply service configuration to expose deployment
-                        kubectl apply -f ~/exp.yaml
-                        kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
+# Wait for the deployment rollout to complete
+echo "Waiting for deployment to finish rolling out..."
+kubectl rollout status deployment/${DEPLOYMENT_NAME}
 
-                        # Check the status of the deployment and service
-                        kubectl get deployments
-                        kubectl get services
+# Apply service configuration to expose deployment
+kubectl apply -f ${SERVICE_FILE}
 
-                        
+# Expose deployment (if needed)
+kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
 
-                       
+# Check the status of the deployment and service
+kubectl get deployments
+kubectl get services
                         
                         """
-                    }
                 }
             }
         }
     }
+}
 
     

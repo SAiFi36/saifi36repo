@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1 align='center'>SAiFi36 | Project</h1>
-    <h2 align='center'>Jenkins + Docker Build&Push + Kubernetes Deployment</h2>
+    <h2 align='center'>Jenkins + Docker Build, SCAN & Push + Kubernetes Deployment</h2>
     <hr>
     <form action='login.php' method='POST'>
         <table align='center' border='1'>

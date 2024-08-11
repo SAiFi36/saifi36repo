@@ -57,26 +57,31 @@ pipeline {
           sed -i 's|image: .*/.*|image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|g' ~/dep.yaml
 
           # Apply deployment configuration
-          kubectl apply -f ${DEPLOYMENT_FILE}
+kubectl apply -f ${DEPLOYMENT_FILE}
 
-          # Check if the deployment exists
-          if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
-            echo "Deployment exists, updating the image"
-            kubectl apply -f ${DEPLOYMENT_FILE}
-          else
-            echo "Deployment does not exist, creating deployment"
-            kubectl apply -f ${DEPLOYMENT_FILE}
-          fi
+# Check if the deployment exists
+if kubectl get deployments | grep -q ${DEPLOYMENT_NAME}; then
+  echo "Deployment exists, restarting the rollout"
+  kubectl rollout restart deployment/${DEPLOYMENT_NAME}
+else
+  echo "Deployment does not exist, creating deployment"
+  kubectl apply -f ${DEPLOYMENT_FILE}
+fi
 
-          # Apply service configuration to expose deployment
-          kubectl apply -f ${SERVICE_FILE}
+# Wait for the rollout to complete
+echo "Waiting for deployment rollout to finish..."
+kubectl rollout status deployment/${DEPLOYMENT_NAME}
 
-          # Expose deployment (if needed)
-          kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
+# Apply service configuration to expose deployment
+kubectl apply -f ${SERVICE_FILE}
 
-          # Check the status of the deployment and service
-          kubectl get deployments
-          kubectl get services
+# Expose deployment (if needed)
+kubectl expose deployment ${DEPLOYMENT_NAME} --type=NodePort
+
+# Check the status of the deployment and service
+kubectl get deployments
+kubectl get services
+
         
           """
         }

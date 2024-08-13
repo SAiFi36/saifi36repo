@@ -164,6 +164,7 @@
     <div class="title-section">
       <h1>SAiFi36 | Project</h1>
       <h2>Jenkins + Docker Build, SCAN & Push + Kubernetes Deployment</h2>
+      <h2>Prometheus/Grafana Monitoring + SNORT IDS/IPS</h2>
     </div>
     <form action="login.php" method="POST">
       <div class="input-field">
